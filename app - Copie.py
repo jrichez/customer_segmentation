@@ -7,34 +7,34 @@ st.title('Segmentation client')
 st.header("Cette application permet d'attribuer un nouveau client a un cluster")
 st.subheader("Selectionner les differents attributs du nouveau client et le modele retournera le segment auquel il appartient")
 
-gender = st.sidebar.selectbox('Sexe', ('Homme', 'Femme'))
+gender = st.selectbox('Sexe', ('Homme', 'Femme'))
 gender_map = {'Homme' : 'Male', 'Femme' : 'Female'}
 gender = pd.Series(gender).map(gender_map)[0]
 
-ever_married = st.sidebar.selectbox('A deja ete marrie', ('Oui', 'Non'))
+ever_married = st.selectbox('A deja ete marrie', ('Oui', 'Non'))
 married_map = {'Oui' : 'Yes', 'Non' : 'No'}
 ever_married = pd.Series(ever_married).map(married_map)[0]
 
-age = round(st.sidebar.number_input('Age'))
+age = round(st.number_input('Age'))
 
-graduated = st.sidebar.selectbox('Diplome', ('Oui', 'Non'))
+graduated = st.selectbox('Diplome', ('Oui', 'Non'))
 graduated_map = {'Oui' : 'Yes', 'Non' : 'No'}
 graduated = pd.Series(graduated).map(graduated_map)[0]
 
 
-profession = st.sidebar.selectbox('Profession', ('Sante', 'Ingenieur', 'Avocat', 'Divertissement', 'Artiste', 'Executant', 'Docteur', 'Artisan', 'Marketing'))
+profession = st.selectbox('Profession', ('Sante', 'Ingenieur', 'Avocat', 'Divertissement', 'Artiste', 'Executant', 'Docteur', 'Artisan', 'Marketing'))
 profession_map = {'Sante' : 'Healthcare', 'Ingenieur' : 'Engineer', 'Avocat' : 'Lawyer', 'Divertissement' : 'Entertainment', 'Artiste' : 'Artist', 'Executant' : 'Executive', 'Docteur' : 'Doctor', 'Artisan' : 'Homemaker', 'Marketing' : 'Marketing'}
 profession = pd.Series(profession).map(profession_map)[0]
 
-work_experience = round(st.sidebar.number_input("Nombre d'annees d'experience professionelle"))
+work_experience = round(st.number_input("Nombre d'annees d'experience professionelle"))
 
-spending_score = st.sidebar.selectbox('Depense moyenne', ('Basse', 'Moyenne', 'Elevee'))
+spending_score = st.selectbox('Depense moyenne', ('Basse', 'Moyenne', 'Elevee'))
 spending_map = {'Basse' : 'Low', 'Moyenne' : 'Average', 'Elevee' : 'High'}
 spending_score = pd.Series(spending_score).map(spending_map)[0]
 
-family_size = round(st.sidebar.number_input('Taille de la famille'))
+family_size = round(st.number_input('Taille de la famille'))
 
-var_1 = st.sidebar.selectbox('Categorie', ('1', '2', '3', '4', '5', '6', '7'))
+var_1 = st.selectbox('Categorie', ('1', '2', '3', '4', '5', '6', '7'))
 var_1_map = {'1' : 'Cat_1', '2' : 'Cat_2', '3' : 'Cat_3', '4' : 'Cat_4', '5' : 'Cat_5', '6' : 'Cat_6', '7' : 'Cat_7'}
 var_1 = pd.Series(var_1).map(var_1_map)[0]
 
