@@ -132,8 +132,6 @@ if customer_file is not None:
        st.success('Les segments ont pu être prédits et le fichier complété est téléchargeable ci-dessous')
        st.download_button('Fichier client complété', df_csv, file_name='fichier_client.csv')
        
-   except ParserError:
-       st.error('Erreur : Le fichier doit être au format csv')
    except TypeError:
        st.error("Erreur : Le fichier n'a pas la bonne structure")
            
