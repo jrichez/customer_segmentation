@@ -50,8 +50,8 @@ with st.sidebar.form("my_form"):
 
 	family_size = round(st.number_input('Taille de la famille', step=1))
 
-	var_1 = st.selectbox('Catégorie', ('1', '2', '3', '4', '5', '6', '7'))
-	var_1_map = {'1' : 'Cat_1', '2' : 'Cat_2', '3' : 'Cat_3', '4' : 'Cat_4', '5' : 'Cat_5', '6' : 'Cat_6', '7' : 'Cat_7'}
+	var_1 = st.selectbox('Catégorie', (1, 2, 3, 4, 5, 6, 7))
+	var_1_map = {1 : 'Cat_1', 2 : 'Cat_2', 3 : 'Cat_3', 4 : 'Cat_4', 5 : 'Cat_5', 6 : 'Cat_6', 7 : 'Cat_7'}
 	var_1 = pd.Series(var_1).map(var_1_map)[0]
 
 	new_customer = np.array([gender, ever_married, age, graduated, profession, work_experience, spending_score, family_size, var_1])
@@ -81,22 +81,22 @@ with st.sidebar.form("my_form"):
 	submitted = st.form_submit_button("Prédire")
 
 	if submitted:
-		st.subheader('Ce client appartient au segment ' + str(pred))
+		st.subheader('Ce client appartient au segment ' + str(pd.Series(pred).map({0 : 1, 1 : 2})[0]))
 
 # Middle
 
 st.subheader('Fichier client')
 st.markdown('Le fichier doit avoir la structure suivante :')
 
-new_customer_1 = np.array(['Male', 'Yes', 60, 'Yes', 'Artist', 1, 'High', 5, 'Cat_4'])
-new_customer_2 = np.array(['Female', 'No', 26, 'Yes', 'Healthcare', 3, 'Low', 1, 'Cat_6'])
+new_customer_1 = np.array(['Homme', 'Oui', 60, 'Oui', 'Artiste', 1, 'Elevée', 5, 4])
+new_customer_2 = np.array(['Femme', 'Non', 26, 'Oui', 'Santé', 3, 'Basse', 1, 6])
 df_col = ['Sexe', 'A déjà été marrié', 'Age', 'Diplôme', 'Profession', "Nombre d'années d'expérience", 'Dépense moyenne', 'Taille de la famille', 'Catégorie']
 df = pd.DataFrame([new_customer_1, new_customer_2], columns=df_col)
 df_view = st.table(df)
 
 st.markdown('Le programme retourne :')
 
-df['Segment'] = [0, 1]
+df['Segment'] = [1, 2]
 df_view = st.table(df)
 
 customer_file = st.file_uploader('Importer un fichier client')
@@ -110,6 +110,13 @@ if customer_file is not None:
        customer_file = pd.read_csv(customer_file)
        df_to_predict = customer_file.copy()
        
+       df_to_predict.iloc[:, 0] = pd.Series(df_to_predict.iloc[:, 0]).map(gender_map)
+       df_to_predict.iloc[:, 1] = pd.Series(df_to_predict.iloc[:, 1]).map(married_map)
+       df_to_predict.iloc[:, 3] = pd.Series(df_to_predict.iloc[:, 3]).map(graduated_map)
+       df_to_predict.iloc[:, 4] = pd.Series(df_to_predict.iloc[:, 4]).map(profession_map)
+       df_to_predict.iloc[:, 6] = pd.Series(df_to_predict.iloc[:, 6]).map(spending_map)
+       df_to_predict.iloc[:, 8] = pd.Series(df_to_predict.iloc[:, 8]).map(var_1_map)
+       
        df_to_predict.iloc[:, 0] = encoder_gender.transform(df_to_predict.iloc[:, 0])
        df_to_predict.iloc[:, 1] = encoder_ever_married.transform(df_to_predict.iloc[:, 1])
        df_to_predict.iloc[:, 3] = encoder_graduated.transform(df_to_predict.iloc[:, 3])
@@ -118,7 +125,8 @@ if customer_file is not None:
        df_to_predict.iloc[:, 8] = encoder_var_1.transform(df_to_predict.iloc[:, 8])
 
        pred = model.predict(scaler.transform(df_to_predict))
-       customer_file['Segment'] = pred
+       customer_file['Segment'] = pd.Series(pred).map({0 : 1, 1 : 2})  
+       
        df_csv = convert_df(customer_file)
        
        st.success('Les segments ont pu être prédits et le fichier complété est téléchargeable ci-dessous')
@@ -138,4 +146,4 @@ with st.expander('Note'):
 	st.write("Un fichier est disponible pour pouvoir tester l'application : ")
 	st.download_button('Fichier test', test, file_name='test.csv')
 
-	st.write("Cette application est basee sur un modele que j'ai cree et consultable dans ce notebook : https://www.kaggle.com/richez/customer-segmentation")
+	st.write("Cette application est basée sur un modèle que j'ai crée et consultable dans ce notebook : https://www.kaggle.com/richez/customer-segmentation")
