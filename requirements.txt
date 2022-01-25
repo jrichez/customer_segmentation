@@ -1,3 +1,2 @@
 sklearn
-pickle
 pandas.io.parsers
